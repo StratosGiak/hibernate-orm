@@ -125,7 +125,7 @@ public class SimpleForeignKeyDescriptor implements ForeignKeyDescriptor, BasicVa
 		this(
 				keyDeclaringType,
 				keySelectableMapping,
-				( (PropertyBasedMapping) targetModelPart ).getPropertyAccess(),
+				((PropertyBasedMapping) targetModelPart).getPropertyAccess(),
 				targetModelPart,
 				refersToPrimaryKey,
 				hasConstraint,
@@ -210,7 +210,7 @@ public class SimpleForeignKeyDescriptor implements ForeignKeyDescriptor, BasicVa
 	@Override
 	public int compare(Object key1, Object key2) {
 		//noinspection unchecked,rawtypes
-		return ( (JavaType) keySide.getModelPart().getJavaType() ).getComparator().compare( key1, key2 );
+		return ((JavaType) keySide.getModelPart().getJavaType()).getComparator().compare( key1, key2 );
 	}
 
 	@Override
@@ -223,7 +223,7 @@ public class SimpleForeignKeyDescriptor implements ForeignKeyDescriptor, BasicVa
 		return new SimpleForeignKeyDescriptor(
 				declaringType,
 				keySide.getModelPart(),
-				( (PropertyBasedMapping) keySide.getModelPart() ).getPropertyAccess(),
+				((PropertyBasedMapping) keySide.getModelPart()).getPropertyAccess(),
 				selectableMapping,
 				targetSide.getModelPart(),
 				selectableMapping.isInsertable(),
@@ -322,7 +322,7 @@ public class SimpleForeignKeyDescriptor implements ForeignKeyDescriptor, BasicVa
 
 	private static TableGroup getUnderlyingTableGroup(TableGroup tableGroup) {
 		if ( tableGroup.isVirtual() ) {
-			tableGroup = getUnderlyingTableGroup( ( (VirtualTableGroup) tableGroup ).getUnderlyingTableGroup() );
+			tableGroup = getUnderlyingTableGroup( ((VirtualTableGroup) tableGroup).getUnderlyingTableGroup() );
 		}
 		return tableGroup;
 	}
@@ -388,7 +388,7 @@ public class SimpleForeignKeyDescriptor implements ForeignKeyDescriptor, BasicVa
 				navigablePath,
 				// if the expression type is different that the expected type coerce the value
 				selectionType != null
-						&& selectionType.getSingleJdbcMapping().getJdbcJavaType() != javaType,
+				&& selectionType.getSingleJdbcMapping().getJdbcJavaType() != javaType,
 				!sqlSelection.isVirtual()
 		);
 	}
@@ -433,7 +433,7 @@ public class SimpleForeignKeyDescriptor implements ForeignKeyDescriptor, BasicVa
 		final var lhsExpr = comparisonPredicate.getLeftHandExpression();
 		final var rhsExpr = comparisonPredicate.getRightHandExpression();
 		if ( lhsExpr instanceof ColumnReference lhsColumnRef
-				&& rhsExpr instanceof ColumnReference rhsColumnRef ) {
+			&& rhsExpr instanceof ColumnReference rhsColumnRef ) {
 			final String lhs = lhsColumnRef.getColumnExpression();
 			final String rhs = rhsColumnRef.getColumnExpression();
 			final String keyExpression = keySide.getModelPart().getSelectionExpression();
@@ -501,19 +501,19 @@ public class SimpleForeignKeyDescriptor implements ForeignKeyDescriptor, BasicVa
 		}
 		final var modelPart = side.getModelPart();
 		if ( modelPart.isEntityIdentifierMapping() ) {
-			return ( (EntityIdentifierMapping) modelPart )
+			return ((EntityIdentifierMapping) modelPart)
 					.getIdentifierIfNotUnsaved( targetObject, session );
 		}
 
 		if ( lazyInitializer == null && isPersistentAttributeInterceptable( targetObject ) ) {
 			if ( asPersistentAttributeInterceptable( targetObject ).$$_hibernate_getInterceptor()
 						instanceof EnhancementAsProxyLazinessInterceptor lazinessInterceptor
-					&& !lazinessInterceptor.isInitialized() ) {
+				&& !lazinessInterceptor.isInitialized() ) {
 				Hibernate.initialize( targetObject );
 			}
 		}
 
-		return ( (PropertyBasedMapping) modelPart )
+		return ((PropertyBasedMapping) modelPart)
 				.getPropertyAccess().getGetter().get( targetObject );
 	}
 
@@ -561,8 +561,10 @@ public class SimpleForeignKeyDescriptor implements ForeignKeyDescriptor, BasicVa
 	@Override
 	public AssociationKey getAssociationKey() {
 		if ( associationKey == null ) {
-			final List<String> associationKeyColumns = Collections.singletonList( keySide.getModelPart().getSelectionExpression() );
-			associationKey = new AssociationKey( keySide.getModelPart().getContainingTableExpression(), associationKeyColumns );
+			final List<String> associationKeyColumns = Collections.singletonList(
+					keySide.getModelPart().getSelectionExpression() );
+			associationKey = new AssociationKey( keySide.getModelPart().getContainingTableExpression(),
+					associationKeyColumns );
 		}
 		return associationKey;
 	}
@@ -574,6 +576,7 @@ public class SimpleForeignKeyDescriptor implements ForeignKeyDescriptor, BasicVa
 		}
 		return targetSide.getModelPart().getJdbcMapping();
 	}
+
 	@Override
 	public JdbcMapping getSingleJdbcMapping() {
 		return targetSide.getModelPart().getJdbcMapping();
@@ -593,7 +596,8 @@ public class SimpleForeignKeyDescriptor implements ForeignKeyDescriptor, BasicVa
 			Y y,
 			JdbcValuesBiConsumer<X, Y> valuesConsumer,
 			SharedSessionContractImplementor session) {
-		valuesConsumer.consume( offset, x, y, disassemble( value, session ), targetSide.getModelPart().getJdbcMapping() );
+		valuesConsumer.consume( offset, x, y, disassemble( value, session ),
+				targetSide.getModelPart().getJdbcMapping() );
 		return getJdbcTypeCount();
 	}
 
@@ -657,6 +661,7 @@ public class SimpleForeignKeyDescriptor implements ForeignKeyDescriptor, BasicVa
 	public @Nullable Long getLength() {
 		return keySide.getModelPart().getLength();
 	}
+
 	@Override
 	public @Nullable Integer getArrayLength() {
 		return keySide.getModelPart().getArrayLength();
